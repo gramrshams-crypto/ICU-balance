@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d4a">
+<title>ICU Shift Balance</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+  --bg:#f5f7f8; --card:#ffffff; --ink:#14222a; --muted:#6b7880;
+  --primary:#0f3d4a; --primary2:#1a6578; --accent:#d9a441; --danger:#a33a3a;
+  --line:#dfe6e9; --ok:#2f7d55;
+}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;padding:18px 16px;box-shadow:0 4px 18px #0002}
+header h1{margin:0;font-size:1.35rem} header p{margin:4px 0 0;opacity:.85;font-size:.9rem}
+main{max-width:1100px;margin:auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.tab{border:0;border-radius:999px;padding:10px 14px;background:#e8eef0;color:var(--ink);cursor:pointer;font-weight:700}
+.tab.active{background:var(--primary);color:#fff}
+.panel{display:none}.panel.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 5px 18px #0000000b}
+.card h2,.card h3{margin:0 0 10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+label{font-size:.85rem;color:var(--muted);font-weight:700;display:block;margin:8px 0 5px}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit}
+textarea{min-height:84px;resize:vertical}
+button.primary,button.secondary,button.danger{border:0;border-radius:11px;padding:11px 14px;font-weight:800;cursor:pointer}
+button.primary{background:var(--primary);color:#fff}.secondary{background:#e8eef0;color:var(--ink)}.danger{background:#fde7e7;color:var(--danger)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.item{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;background:#fcfdfd}
+.item .meta{font-size:.82rem;color:var(--muted)}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.75rem;font-weight:800;background:#edf2f4;margin-left:4px}
+.badge.critical{background:#fde6e6;color:#8f2727}.badge.high{background:#fff0db;color:#86510b}.badge.medium{background:#fff8cc;color:#6e5a00}.badge.stable{background:#e3f4ea;color:#256741}
+.assignment{border-right:5px solid var(--primary)}
+.free{border-right-color:var(--accent)}
+.warning{background:#fff4e6;border:1px solid #f0c889;padding:10px;border-radius:10px;margin:10px 0;color:#7a4a00;font-weight:700}
+.ok{background:#e8f6ed;border:1px solid #b7dfc5;padding:10px;border-radius:10px;margin:10px 0;color:#235f3d;font-weight:700}
+.small{font-size:.82rem;color:var(--muted)}
+.checkbox-line{display:flex;align-items:center;gap:8px;margin:4px 0}.checkbox-line input{width:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+footer{padding:28px;text-align:center;color:var(--muted);font-size:.8rem}
+@media(max-width:600px){.row,.row3{grid-template-columns:1fr}.tab{flex:1 1 auto} header{position:static}}
+</style>
+</head>
+<body>
+<header>
+  <h1>ICU Shift Balance</h1>
+  <p>توزيع ذكي وعادل للحالات والمهام داخل شفت العناية المركزة</p>
+</header>
+<main>
+  <div class="tabs">
+    <button class="tab active" data-tab="staff">التمريض</button>
+    <button class="tab" data-tab="patients">الحالات</button>
+    <button class="tab" data-tab="distribution">التوزيع</button>
+    <button class="tab" data-tab="history">الهيستوري</button>
+  </div>
+
+  <section id="staff" class="panel active">
+    <div class="grid">
+      <div class="card">
+        <h2>إضافة ممرض/ة</h2>
+        <label>الاسم</label><input id="nurseName" placeholder="مثال: أحمد">
+        <label>المستوى</label>
+        <select id="nurseLevel">
+          <option>جديد</option><option>متوسط</option><option>قديم</option><option>Senior Shift</option>
+        </select>
+        <div class="actions"><button class="primary" onclick="addNurse()">إضافة</button></div>
+      </div>
+      <div class="card">
+        <h2>التمريض في الشفت</h2>
+        <div id="staffList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="patients" class="panel">
+    <div class="grid">
+      <div class="card">
+        <h2>إضافة حالة</h2>
+        <label>اسم/رقم المريض</label><input id="patientName" placeholder="مثال: Bed 4">
+        <div class="row">
+          <div>
+            <label>درجة الحالة</label>
+            <select id="patientSeverity">
+              <option>مستقرة</option><option>متوسطة</option><option>خطرة</option><option>حرجة</option>
+            </select>
+          </div>
+          <div>
+            <label>الدعم التنفسي</label>
+            <select id="respSupport">
+              <option>Room air</option><option>Nasal</option><option>Facemask</option><option>Reservoir mask</option><option>Bipap</option><option>Niv</option><option>Vent</option>
+            </select>
+          </div>
+        </div>
+        <label>Recommended</label>
+        <textarea id="recommended" placeholder="اكتب كل مهمة في سطر مستقل"></textarea>
+        <div class="actions"><button class="primary" onclick="addPatient()">إضافة الحالة</button></div>
+      </div>
+      <div class="card">
+        <h2>الحالات</h2>
+        <div id="patientList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="distribution" class="panel">
+    <div class="card">
+      <div class="row">
+        <div>
+          <label>التاريخ</label><input type="date" id="shiftDate">
+        </div>
+        <div>
+          <label>الشفت</label>
+          <select id="shiftName"><option>Morning</option><option>Evening</option><option>Night</option></select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="primary" onclick="generateDistribution()">توزيع تلقائي</button>
+        <button class="secondary" onclick="generateDistribution(true)">ريفريش التوزيعة</button>
+        <button class="secondary" onclick="toggleManual()">تدخل يدوي</button>
+        <button class="primary" onclick="saveShift()">حفظ الشفت في الهيستوري</button>
+      </div>
+      <div id="distributionStatus"></div>
+    </div>
+    <div id="assignmentList" class="grid" style="margin-top:12px"></div>
+  </section>
+
+  <section id="history" class="panel">
+    <div class="card">
+      <div class="actions"><button class="danger" onclick="clearHistory()">مسح الهيستوري</button></div>
+      <div id="historyList" style="overflow:auto;margin-top:10px"></div>
+    </div>
+  </section>
+</main>
+<footer>ICU Shift Balance — Prototype v1</footer>
+
+<script>
+const TASKS = [
+  {name:"مسئول الكراش", weight:1},
+  {name:"مسئول الانفكشن", weight:1.5},
+  {name:"مسئول دولاب الطوارئ", weight:2},
+  {name:"مسئول الطلبية والتحاليل", weight:2.5},
+  {name:"مسئول التعقيم", weight:3}
+];
+const severityWeight={مستقرة:1,متوسطة:2,خطرة:3,حرجة:4};
+const respWeight={"Room air":0,Nasal:.5,Facemask:1,"Reservoir mask":1.5,Bipap:2,Niv:2.5,Vent:4};
+const levelRank={جديد:1,متوسط:2,قديم:3,"Senior Shift":4};
+
+let nurses=JSON.parse(localStorage.getItem("icu_nurses")||"[]");
+let patients=JSON.parse(localStorage.getItem("icu_patients")||"[]");
+let history=JSON.parse(localStorage.getItem("icu_history")||"[]");
+let assignments=[];
+let manual=false;
+
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active"); document.getElementById(b.dataset.tab).classList.add("active");
+  if(b.dataset.tab==="history") renderHistory();
+});
+shiftDate.value=new Date().toISOString().slice(0,10);
+
+function persist(){
+  localStorage.setItem("icu_nurses",JSON.stringify(nurses));
+  localStorage.setItem("icu_patients",JSON.stringify(patients));
+  localStorage.setItem("icu_history",JSON.stringify(history));
+}
+function addNurse(){
+  const name=nurseName.value.trim(); if(!name)return alert("اكتب اسم الممرض/ة");
+  nurses.push({id:crypto.randomUUID(),name,level:nurseLevel.value});
+  nurseName.value=""; persist(); renderStaff();
+}
+function addPatient(){
+  const name=patientName.value.trim(); if(!name)return alert("اكتب اسم/رقم المريض");
+  patients.push({id:crypto.randomUUID(),name,severity:patientSeverity.value,resp:respSupport.value,recommended:recommended.value.split("\n").map(x=>x.trim()).filter(Boolean)});
+  patientName.value=""; recommended.value=""; persist(); renderPatients();
+}
+function removeNurse(id){nurses=nurses.filter(x=>x.id!==id);persist();renderStaff()}
+function removePatient(id){patients=patients.filter(x=>x.id!==id);persist();renderPatients()}
+function renderStaff(){
+  staffList.innerHTML=nurses.length?nurses.map(n=>`<div class="item"><b>${n.name}</b> <span class="badge">${n.level}</span><div class="actions"><button class="danger" onclick="removeNurse('${n.id}')">حذف</button></div></div>`).join(""):"<p class='small'>لا يوجد تمريض مضاف بعد.</p>";
+}
+function badgeClass(s){return s==="حرجة"?"critical":s==="خطرة"?"high":s==="متوسطة"?"medium":"stable"}
+function renderPatients(){
+  patientList.innerHTML=patients.length?patients.map(p=>`<div class="item"><b>${p.name}</b> <span class="badge ${badgeClass(p.severity)}">${p.severity}</span> <span class="badge">${p.resp}</span>${p.recommended.length?`<div class="small">Recommended: ${p.recommended.join(" • ")}</div>`:""}<div class="actions"><button class="danger" onclick="removePatient('${p.id}')">حذف</button></div></div>`).join(""):"<p class='small'>لا توجد حالات مضافة بعد.</p>";
+}
+function recentLoad(nurseName, days=14){
+  const since=Date.now()-days*86400000;
+  let score=0;
+  history.forEach(h=>{
+    if(new Date(h.date).getTime()>=since){
+      const a=h.assignments.find(x=>x.nurse===nurseName);
+      if(a) score+=a.load||0;
+    }
+  });
+  return score;
+}
+function patientLoad(p){return severityWeight[p.severity]+respWeight[p.resp]}
+function generateDistribution(refresh=false){
+  if(!nurses.length || !patients.length){distributionStatus.innerHTML="<div class='warning'>أضف التمريض والحالات أولاً.</div>";return}
+  const shuffled=[...nurses].sort((a,b)=> recentLoad(a.name)-recentLoad(b.name) || (refresh?Math.random()-.5:0));
+  const senior=shuffled.find(n=>n.level==="Senior Shift");
+  let working=shuffled.filter(n=>n.level!=="Senior Shift");
+  const sortedPatients=[...patients].sort((a,b)=>patientLoad(b)-patientLoad(a));
+
+  assignments=shuffled.map(n=>({nurse:n.name,level:n.level,patients:[],tasks:[],load:0,free:false}));
+  const A=name=>assignments.find(x=>x.nurse===name);
+
+  // Prefer keeping Senior free only if the remaining staff can carry the base assignment safely.
+  const ventCount=sortedPatients.filter(p=>p.resp==="Vent").length;
+  const nonVentCount=sortedPatients.length-ventCount;
+  let keepSeniorFree=!!senior && working.length>0 && sortedPatients.length<=working.length+Math.floor(working.length/2);
+
+  let active=[...working];
+  if(!keepSeniorFree && senior) active.push(senior);
+  if(!active.length && senior) active=[senior];
+
+  // 1) Vent: one nurse per vent whenever possible.
+  const vents=sortedPatients.filter(p=>p.resp==="Vent");
+  const others=sortedPatients.filter(p=>p.resp!=="Vent");
+  for(const p of vents){
+    const cand=active.filter(n=>A(n.name).patients.length===0).sort((x,y)=>A(x.name).load-A(y.name).load || recentLoad(x.name)-recentLoad(y.name))[0];
+    if(cand){A(cand.name).patients.push(p);A(cand.name).load+=patientLoad(p);}
+    else break;
+  }
+
+  // 2) Distribute remaining patients to lowest safe load.
+  for(const p of others){
+    let candidates=active.filter(n=>{
+      const a=A(n.name);
+      if(a.patients.some(x=>x.resp==="Vent")) return false;
+      if(a.patients.length===0) return true;
+      if(a.patients.length===1){
+        const existing=a.patients[0];
+        // Prefer pairing only stable with moderate/other stable in shortage.
+        return p.severity==="مستقرة" || existing.severity==="مستقرة";
+      }
+      return false;
+    });
+    if(!candidates.length) candidates=active.filter(n=>!A(n.name).patients.some(x=>x.resp==="Vent"));
+    candidates.sort((x,y)=>A(x.name).load-A(y.name).load || recentLoad(x.name)-recentLoad(y.name));
+    if(candidates[0]){
+      A(candidates[0].name).patients.push(p);
+      A(candidates[0].name).load+=patientLoad(p);
+    }
+  }
+
+  // Mark free.
+  assignments.forEach(a=>a.free=a.patients.length===0);
+
+  // Additional tasks: free/newest first, avoid vent or overloaded staff where possible.
+  let taskPool=[...assignments].sort((a,b)=>{
+    if(a.free!==b.free)return a.free?-1:1;
+    if(levelRank[a.level]!==levelRank[b.level])return levelRank[a.level]-levelRank[b.level];
+    return a.load-b.load || recentLoad(a.nurse)-recentLoad(b.nurse);
+  });
+  TASKS.forEach(task=>{
+    const c=taskPool.find(a=>!a.patients.some(p=>p.resp==="Vent") && a.patients.length<3 && a.tasks.length<1) || taskPool[0];
+    if(c){c.tasks.push(task.name);c.load+=task.weight}
+  });
+
+  let shortage = patients.length>nurses.length;
+  let severeShortage = assignments.some(a=>a.patients.length>2) || vents.length>active.length;
+  let seniorTxt = senior ? (keepSeniorFree?"تمت محاولة إبقاء Senior Shift بدون حالات.":"تم إدخال Senior Shift في التوزيع لتجنب تحميل زائد على باقي الاستف.") : "";
+  distributionStatus.innerHTML = severeShortage
+    ? `<div class="warning">عجز شديد: التوزيعة تجاوزت القواعد المفضلة. استخدم التدخل اليدوي وراجع التوزيع سريريًا. ${seniorTxt}</div>`
+    : shortage
+      ? `<div class="warning">حالة عجز: تم توزيع الحالات بأقل حمل ممكن وفق القواعد المسجلة. ${seniorTxt}</div>`
+      : `<div class="ok">تم إنشاء توزيعة متوازنة مبدئيًا. ${seniorTxt}</div>`;
+  renderAssignments();
+}
+function toggleManual(){manual=!manual;renderAssignments()}
+function renderAssignments(){
+  assignmentList.innerHTML=assignments.map((a,idx)=>{
+    const phtml=a.patients.length?a.patients.map(p=>`
+      <div class="item">
+        <b>${p.name}</b> <span class="badge ${badgeClass(p.severity)}">${p.severity}</span> <span class="badge">${p.resp}</span>
+        ${p.recommended.length?`<div style="margin-top:7px"><b>Recommended</b>${p.recommended.map((r,i)=>`<label class="checkbox-line"><input type="checkbox"> ${r}</label>`).join("")}</div>`:""}
+      </div>`).join(""):"<div class='small'>Free</div>";
+    const manualUI=manual?`<div style="margin-top:10px"><label>نقل حالة إلى هذا الممرض</label><select onchange="manualMove('${a.nurse}',this.value);this.value=''"><option value="">اختر حالة</option>${patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join("")}</select></div>`:"";
+    return `<div class="card assignment ${a.free?'free':''}"><h3>${a.nurse}</h3><span class="badge">${a.level}</span><div class="small">Workload: ${a.load.toFixed(1)} | Historical 14d: ${recentLoad(a.nurse).toFixed(1)}</div>${phtml}${a.tasks.length?`<div class="item"><b>مهام إضافية:</b> ${a.tasks.join("، ")}</div>`:""}${manualUI}</div>`
+  }).join("");
+}
+function manualMove(nurse, patientId){
+  if(!patientId)return;
+  const p=patients.find(x=>x.id===patientId); if(!p)return;
+  assignments.forEach(a=>a.patients=a.patients.filter(x=>x.id!==patientId));
+  const target=assignments.find(a=>a.nurse===nurse); target.patients.push(p);
+  assignments.forEach(a=>{a.load=a.patients.reduce((s,p)=>s+patientLoad(p),0)+a.tasks.reduce((s,t)=>s+(TASKS.find(x=>x.name===t)?.weight||0),0);a.free=a.patients.length===0});
+  renderAssignments();
+}
+function saveShift(){
+  if(!assignments.length)return alert("اعمل التوزيعة أولاً");
+  const rec={date:shiftDate.value,day:new Date(shiftDate.value+"T12:00:00").toLocaleDateString("ar-EG",{weekday:"long"}),shift:shiftName.value,assignments:assignments.map(a=>({nurse:a.nurse,level:a.level,patients:a.patients.map(p=>({name:p.name,severity:p.severity,resp:p.resp})),tasks:[...a.tasks],load:a.load,free:a.free}))};
+  history.unshift(rec);persist();alert("تم حفظ الشفت في الهيستوري");
+}
+function renderHistory(){
+  if(!history.length){historyList.innerHTML="<p class='small'>لا يوجد هيستوري محفوظ حتى الآن.</p>";return}
+  historyList.innerHTML=history.map(h=>`<div class="item"><b>${h.date} — ${h.day} — ${h.shift}</b><table><thead><tr><th>الممرض</th><th>المستوى</th><th>الحالات</th><th>المهام</th><th>الحمل</th></tr></thead><tbody>${h.assignments.map(a=>`<tr><td>${a.nurse}</td><td>${a.level}</td><td>${a.free?"Free":a.patients.map(p=>`${p.name} (${p.severity}/${p.resp})`).join("<br>")}</td><td>${a.tasks.join("، ")||"—"}</td><td>${(a.load||0).toFixed(1)}</td></tr>`).join("")}</tbody></table></div>`).join("")
+}
+function clearHistory(){if(confirm("هل تريد مسح الهيستوري بالكامل؟")){history=[];persist();renderHistory()}}
+renderStaff();renderPatients();renderHistory();
+
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+</script>
+</body>
+</html>
