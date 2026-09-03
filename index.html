@@ -2,309 +2,186 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f3d4a">
-<title>ICU Shift Balance</title>
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>ICU Shift Balance V3</title>
 <style>
-:root{
-  --bg:#f5f7f8; --card:#ffffff; --ink:#14222a; --muted:#6b7880;
-  --primary:#0f3d4a; --primary2:#1a6578; --accent:#d9a441; --danger:#a33a3a;
-  --line:#dfe6e9; --ok:#2f7d55;
-}
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;padding:18px 16px;box-shadow:0 4px 18px #0002}
-header h1{margin:0;font-size:1.35rem} header p{margin:4px 0 0;opacity:.85;font-size:.9rem}
-main{max-width:1100px;margin:auto;padding:16px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
-.tab{border:0;border-radius:999px;padding:10px 14px;background:#e8eef0;color:var(--ink);cursor:pointer;font-weight:700}
-.tab.active{background:var(--primary);color:#fff}
-.panel{display:none}.panel.active{display:block}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 5px 18px #0000000b}
-.card h2,.card h3{margin:0 0 10px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-label{font-size:.85rem;color:var(--muted);font-weight:700;display:block;margin:8px 0 5px}
-input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit}
-textarea{min-height:84px;resize:vertical}
-button.primary,button.secondary,button.danger{border:0;border-radius:11px;padding:11px 14px;font-weight:800;cursor:pointer}
-button.primary{background:var(--primary);color:#fff}.secondary{background:#e8eef0;color:var(--ink)}.danger{background:#fde7e7;color:var(--danger)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.item{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;background:#fcfdfd}
-.item .meta{font-size:.82rem;color:var(--muted)}
-.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.75rem;font-weight:800;background:#edf2f4;margin-left:4px}
-.badge.critical{background:#fde6e6;color:#8f2727}.badge.high{background:#fff0db;color:#86510b}.badge.medium{background:#fff8cc;color:#6e5a00}.badge.stable{background:#e3f4ea;color:#256741}
-.assignment{border-right:5px solid var(--primary)}
-.free{border-right-color:var(--accent)}
-.warning{background:#fff4e6;border:1px solid #f0c889;padding:10px;border-radius:10px;margin:10px 0;color:#7a4a00;font-weight:700}
-.ok{background:#e8f6ed;border:1px solid #b7dfc5;padding:10px;border-radius:10px;margin:10px 0;color:#235f3d;font-weight:700}
-.small{font-size:.82rem;color:var(--muted)}
-.checkbox-line{display:flex;align-items:center;gap:8px;margin:4px 0}.checkbox-line input{width:auto}
-table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
-footer{padding:28px;text-align:center;color:var(--muted);font-size:.8rem}
-@media(max-width:600px){.row,.row3{grid-template-columns:1fr}.tab{flex:1 1 auto} header{position:static}}
+:root{--bg:#0f172a;--card:#1e293b;--card2:#111b2e;--line:#334155;--text:#e5edf5;--muted:#94a3b8;--teal:#0f766e;--red:#ef4444;--amber:#f59e0b;--green:#22c55e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}
+button,input,select,textarea{font:inherit}.wrap{max-width:1180px;margin:auto;padding:14px}.top{position:sticky;top:0;z-index:30;background:#0f172aee;border-bottom:1px solid #ffffff12;backdrop-filter:blur(12px)}
+.topin{max-width:1180px;margin:auto;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{display:flex;align-items:center;gap:10px}.logo{width:54px;height:54px;border:1px solid #14b8a666;border-radius:16px;display:grid;place-items:center;font-weight:900;position:relative;background:#112034}.logo:before,.logo:after{content:"↔";position:absolute;color:#14b8a6;font-size:14px}.logo:before{top:2px}.logo:after{bottom:2px}
+h1{font-size:1.15rem;margin:0}.muted{color:var(--muted);font-size:.8rem}.tabs{display:flex;gap:7px;overflow:auto;padding:12px 0}.tab{white-space:nowrap;border:1px solid var(--line);background:#172235;color:#dbe5ef;border-radius:999px;padding:9px 12px;font-weight:800}.tab.active{background:var(--teal);border-color:var(--teal)}
+.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 12px 30px #0003}.card h2{margin:0 0 4px;font-size:1rem}
+label{display:block;font-size:.83rem;font-weight:800;margin:9px 0 5px;color:#dbe5ef}input,select,textarea{width:100%;padding:10px 11px;border-radius:11px;border:1px solid var(--line);background:var(--card2);color:var(--text);outline:none}textarea{min-height:105px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{border-radius:11px;border:1px solid transparent;padding:10px 13px;font-weight:900;cursor:pointer}.primary{background:var(--teal);color:#fff}.secondary{background:#27364d;border-color:#3a4b65;color:#e5edf5}.danger{background:#3a1f28;border-color:#6a2738;color:#fecaca}.warning{background:#4a3716;border-color:#715419;color:#fde68a}
+.list{display:flex;flex-direction:column;gap:8px}.item{display:flex;justify-content:space-between;gap:9px;background:#172235;border:1px solid var(--line);border-radius:12px;padding:10px}.title{font-weight:900}.meta{font-size:.76rem;color:var(--muted);line-height:1.55}.badge{display:inline-block;margin:4px 0 0 4px;padding:3px 7px;border-radius:999px;border:1px solid #40516d;background:#2b3b53;font-size:.7rem;font-weight:900}.iso{background:#4b1f25;border-color:#8a2a39;color:#fecaca}.vent{background:#183a4a;border-color:#24566e;color:#bae6fd}
+.alert{padding:10px 12px;border-radius:12px;margin-top:10px;font-size:.83rem;font-weight:800;line-height:1.6}.ok{background:#123524;border:1px solid #1f5a3c;color:#bbf7d0}.bad{background:#3f1d25;border:1px solid #7b2939;color:#fecaca}.warn{background:#3b2d13;border:1px solid #6c511b;color:#fde68a}
+.switch{display:flex;gap:8px;align-items:center;padding:10px;border-radius:11px;background:#3b2d13;border:1px solid #6c511b;color:#fde68a;font-weight:900;margin-top:10px}.switch input{width:auto;accent-color:var(--amber)}
+table{width:100%;border-collapse:collapse;min-width:930px}th,td{padding:9px;border-bottom:1px solid var(--line);vertical-align:top;text-align:right}th{background:#111b2e;white-space:nowrap}.tablewrap{overflow:auto}
+.floating{position:fixed;left:12px;bottom:16px;z-index:70;border-radius:999px;box-shadow:0 12px 30px #0007}
+.overlay{display:none;position:fixed;inset:0;z-index:100;background:#0f172a;padding:16px;overflow:auto}.overlay.open{display:block}.invoice{background:#fff;color:#111827;border-radius:14px;padding:15px}.invoice table{min-width:850px}.invoice th{background:#e2e8f0;color:#111827}.invoice td{border-color:#cbd5e1}
+.checkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px}.check{display:flex;align-items:center;gap:7px;background:#172235;border:1px solid var(--line);padding:9px;border-radius:10px}.check input{width:auto}
+.footer{text-align:center;padding:28px 12px;color:#94a3b8;font-size:.76rem}
+@media(max-width:760px){.grid,.row{grid-template-columns:1fr}.wrap{padding:10px}.topin{padding:9px 10px}.brand .muted{display:none}.actions .btn{flex:1 1 auto}}
+@media print{body *{visibility:hidden!important}#invoiceArea,#invoiceArea *{visibility:visible!important}#invoiceArea{position:absolute;inset:0;background:white;padding:0}.no-print{display:none!important}}
 </style>
 </head>
 <body>
-<header>
-  <h1>ICU Shift Balance</h1>
-  <p>توزيع ذكي وعادل للحالات والمهام داخل شفت العناية المركزة</p>
-</header>
-<main>
-  <div class="tabs">
-    <button class="tab active" data-tab="staff">التمريض</button>
-    <button class="tab" data-tab="patients">الحالات</button>
-    <button class="tab" data-tab="distribution">التوزيع</button>
-    <button class="tab" data-tab="history">الهيستوري</button>
-  </div>
+<header class="top"><div class="topin"><div class="brand"><div class="logo">ICU</div><div><h1>ICU Shift Balance</h1><div class="muted">إدارة الشفت • التوزيع • ISBAR • الطوارئ</div></div></div></div></header>
 
-  <section id="staff" class="panel active">
-    <div class="grid">
-      <div class="card">
-        <h2>إضافة ممرض/ة</h2>
-        <label>الاسم</label><input id="nurseName" placeholder="مثال: أحمد">
-        <label>المستوى</label>
-        <select id="nurseLevel">
-          <option>جديد</option><option>متوسط</option><option>قديم</option><option>Senior Shift</option>
-        </select>
-        <div class="actions"><button class="primary" onclick="addNurse()">إضافة</button></div>
-      </div>
-      <div class="card">
-        <h2>التمريض في الشفت</h2>
-        <div id="staffList"></div>
-      </div>
-    </div>
-  </section>
+<div class="wrap">
+<nav class="tabs">
+<button class="tab active" data-tab="staff">التمريض</button>
+<button class="tab" data-tab="isbar">استلام الحالات ISBAR</button>
+<button class="tab" data-tab="patients">الحالات</button>
+<button class="tab" data-tab="distribution">التوزيع</button>
+<button class="tab" data-tab="previous">التوزيعات السابقة</button>
+<button class="tab" data-tab="emergency">فرق الطوارئ</button>
+</nav>
 
-  <section id="patients" class="panel">
-    <div class="grid">
-      <div class="card">
-        <h2>إضافة حالة</h2>
-        <label>اسم/رقم المريض</label><input id="patientName" placeholder="مثال: Bed 4">
-        <div class="row">
-          <div>
-            <label>درجة الحالة</label>
-            <select id="patientSeverity">
-              <option>مستقرة</option><option>متوسطة</option><option>خطرة</option><option>حرجة</option>
-            </select>
-          </div>
-          <div>
-            <label>الدعم التنفسي</label>
-            <select id="respSupport">
-              <option>Room air</option><option>Nasal</option><option>Facemask</option><option>Reservoir mask</option><option>Bipap</option><option>Niv</option><option>Vent</option>
-            </select>
-          </div>
-        </div>
-        <label>Recommended</label>
-        <textarea id="recommended" placeholder="اكتب كل مهمة في سطر مستقل"></textarea>
-        <div class="actions"><button class="primary" onclick="addPatient()">إضافة الحالة</button></div>
-      </div>
-      <div class="card">
-        <h2>الحالات</h2>
-        <div id="patientList"></div>
-      </div>
-    </div>
-  </section>
+<section id="staff" class="panel active">
+<div class="grid">
+<div class="card"><h2>إضافة ممرض/ة</h2><div class="muted">سينيور الشفت مستبعد من القرعة المجنونة تلقائياً.</div>
+<label>الاسم</label><input id="nurseName"><label>المستوى</label><select id="nurseLevel"><option>جديد</option><option>متوسط</option><option>قديم</option><option>سينيور الشفت</option></select>
+<div class="actions"><button class="btn primary" onclick="addNurse()">إضافة</button></div></div>
+<div class="card"><h2>طاقم الشفت</h2><div id="staffList" class="list"></div></div>
+</div></section>
 
-  <section id="distribution" class="panel">
-    <div class="card">
-      <div class="row">
-        <div>
-          <label>التاريخ</label><input type="date" id="shiftDate">
-        </div>
-        <div>
-          <label>الشفت</label>
-          <select id="shiftName"><option>Morning</option><option>Evening</option><option>Night</option></select>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="primary" onclick="generateDistribution()">توزيع تلقائي</button>
-        <button class="secondary" onclick="generateDistribution(true)">ريفريش التوزيعة</button>
-        <button class="secondary" onclick="toggleManual()">تدخل يدوي</button>
-        <button class="primary" onclick="saveShift()">حفظ الشفت في الهيستوري</button>
-      </div>
-      <div id="distributionStatus"></div>
-    </div>
-    <div id="assignmentList" class="grid" style="margin-top:12px"></div>
-  </section>
+<section id="isbar" class="panel">
+<div class="grid">
+<div class="card"><h2>استلام الحالات - ISBAR</h2><div class="muted">حفظ الحالة هنا يضيفها/يحدثها تلقائياً داخل محرك التوزيع.</div>
+<div class="row"><div><label>اسم الحالة</label><input id="iName"></div><div><label>الرقم الطبي</label><input id="iMedical"></div></div>
+<div class="row"><div><label>رقم السرير</label><input id="iBed"></div><div><label>النوع</label><select id="iGender"><option>ذكر</option><option>أنثى</option></select></div></div>
+<div class="row"><div><label>الحالة</label><select id="iSeverity"><option>حرجة</option><option>مرتفعة</option><option>متوسطة</option><option>مستقرة</option></select></div><div><label>التنفس</label><select id="iResp"><option>Room Air</option><option>Nasal</option><option>Venturi</option><option>Facemask</option><option>Bipap</option><option>Niv</option><option>Vent</option></select></div></div>
+<label>الوصلات</label><div class="checkgrid">
+<label class="check"><input class="iline" type="checkbox" value="كانيولا طرفية">كانيولا طرفية</label>
+<label class="check"><input class="iline" type="checkbox" value="جاكولار">جاكولار</label>
+<label class="check"><input class="iline" type="checkbox" value="CVC">CVC</label>
+<label class="check"><input class="iline" type="checkbox" value="قسطرة بولية">قسطرة بولية</label>
+<label class="check"><input class="iline" type="checkbox" value="أنبوبة صدرية">أنبوبة صدرية</label>
+</div>
+<label>السوائل</label><input id="iFluids" type="number" inputmode="decimal" placeholder="أدخل الرقم">
+<label>التوصيات</label><textarea id="iRec" style="min-height:160px" placeholder="اكتب كل المطلوب متابعته وتسليمه للشفت التالي..."></textarea>
+<div class="actions"><button class="btn primary" onclick="saveISBAR()">Save</button><button class="btn danger" onclick="clearISBAR()">Delete</button></div>
+</div>
+<div class="card"><h2>الحالات المحفوظة</h2><div id="isbarList" class="list"></div></div>
+</div></section>
 
-  <section id="history" class="panel">
-    <div class="card">
-      <div class="actions"><button class="danger" onclick="clearHistory()">مسح الهيستوري</button></div>
-      <div id="historyList" style="overflow:auto;margin-top:10px"></div>
-    </div>
-  </section>
-</main>
-<footer>ICU Shift Balance — Prototype v1</footer>
+<section id="patients" class="panel">
+<div class="grid">
+<div class="card"><h2>إضافة حالة سريعة</h2><div class="muted">يمكنك أيضاً إدخال الحالة من ISBAR ليحصل المحرك على معلومات أكثر.</div>
+<label>رقم السرير / الاسم</label><input id="pBed">
+<div class="row"><div><label>الخطورة</label><select id="pSeverity"><option>مستقرة</option><option>متوسطة</option><option>مرتفعة</option><option>حرجة</option></select></div><div><label>التنفس</label><select id="pResp"><option>Room Air</option><option>Nasal</option><option>Venturi</option><option>Facemask</option><option>Bipap</option><option>Niv</option><option>Vent</option></select></div></div>
+<label>Recommended</label><textarea id="pRec"></textarea>
+<label class="switch" style="background:#321c24;border-color:#672435;color:#fecaca"><input id="pIso" type="checkbox">عزل تلامس</label>
+<div class="actions"><button class="btn primary" onclick="addPatient()">إضافة الحالة</button></div></div>
+<div class="card"><h2>الحالات المستخدمة في التوزيع</h2><div id="patientList" class="list"></div></div>
+</div></section>
+
+<section id="distribution" class="panel">
+<div class="card"><h2>التوزيع الذكي</h2><div class="muted">كل ضغطة تنشئ توزيعة جديدة من الصفر. إعادة التوزيع تغيّر الاختيارات المتساوية مع الحفاظ على القواعد.</div>
+<div class="actions"><button class="btn primary" onclick="smartDistribute(false)">تنفيذ التوزيع الذكي</button><button class="btn secondary" onclick="smartDistribute(true)">إعادة توزيع</button><button class="btn warning" onclick="manualMode()">تدخل يدوي</button></div>
+<label class="switch"><input id="severeMode" type="checkbox">تفعيل وضع العجز الشديد / الحالة الطارئة</label>
+<div id="distAlert"></div><div id="manualArea"></div></div>
+<div id="distTable" style="margin-top:12px"></div><div id="teamSummary" class="grid" style="margin-top:12px"></div>
+<div id="distButtons" class="actions" style="justify-content:center;display:none"><button class="btn primary" onclick="confirmDistribution()">تأكيد التوزيعة</button><button class="btn danger" onclick="deleteCurrentDistribution()">حذف التوزيعة</button></div>
+</section>
+
+<section id="previous" class="panel"><div class="card"><h2>التوزيعات السابقة</h2><div class="muted">التوزيعات المؤكدة فقط تُحفظ هنا بالتاريخ والوقت.</div><div id="previousList" class="list"></div><div id="invoiceArea" style="margin-top:12px"></div></div></section>
+
+<section id="emergency" class="panel"><div class="grid"><div class="card"><h2>فريق CPR / Code Blue</h2><div class="muted">ممرض العزل مستبعد تلقائياً.</div><div id="cprEditor"></div><div class="actions"><button class="btn primary" onclick="saveTeams()">حفظ</button></div></div><div class="card"><h2>فريق الإنقاذ</h2><div id="fireEditor"></div><div class="actions"><button class="btn primary" onclick="saveTeams()">حفظ</button></div></div></div><div id="teamAlert"></div></section>
+
+<footer class="footer">فكرة وتنفيذ Mr/ amr shams - جميع حقوق الملكية والفكرية محفوظة 2026</footer>
+</div>
+
+<button class="btn danger floating" onclick="openCrazy()">القرعة المجنونة</button>
+<div id="crazyOverlay" class="overlay"><div style="max-width:760px;margin:auto"><div class="actions" style="justify-content:space-between"><div><h2 style="margin:0">القرعة المجنونة</h2><div class="muted">لاختيار ممرض للـ Help — سينيور الشفت خارج القرعة.</div></div><button class="btn secondary" onclick="closeCrazy()">إغلاق</button></div><div class="card" style="text-align:center;margin-top:12px"><div style="position:relative;width:min(82vw,430px);aspect-ratio:1;margin:18px auto"><div style="position:absolute;left:50%;top:-5px;transform:translateX(-50%);z-index:2;font-size:34px;color:#ef4444">▼</div><canvas id="wheel" width="700" height="700" style="width:100%;height:100%"></canvas></div><button id="spinBtn" class="btn danger" onclick="spinCrazy()">ابدأ القرعة</button><div id="crazyResult" class="alert warn" style="display:none;font-size:1.1rem"></div></div></div></div>
 
 <script>
-const TASKS = [
-  {name:"مسئول الكراش", weight:1},
-  {name:"مسئول الانفكشن", weight:1.5},
-  {name:"مسئول دولاب الطوارئ", weight:2},
-  {name:"مسئول الطلبية والتحاليل", weight:2.5},
-  {name:"مسئول التعقيم", weight:3}
-];
-const severityWeight={مستقرة:1,متوسطة:2,خطرة:3,حرجة:4};
-const respWeight={"Room air":0,Nasal:.5,Facemask:1,"Reservoir mask":1.5,Bipap:2,Niv:2.5,Vent:4};
-const levelRank={جديد:1,متوسط:2,قديم:3,"Senior Shift":4};
+const K={n:"icu3_nurses",p:"icu3_patients",i:"icu3_isbar",h:"icu3_history",d:"icu3_distributions",t:"icu3_teams"};
+const LR={"جديد":1,"متوسط":2,"قديم":3,"سينيور الشفت":4};
+const SW={"مستقرة":1,"متوسطة":2,"مرتفعة":3,"حرجة":4};
+const RW={"Room Air":0,"Nasal":.5,"Venturi":1,"Facemask":1.25,"Bipap":2,"Niv":2.5,"Vent":4};
+const TASKS=[["مسئول الكراش",1],["مسئول الانفكشن",1.5],["مسئول دولاب الطوارئ",2],["مسئول الطلبية والتحاليل",2.5],["مسئول التعقيم",3]];
+const CPR=["ضغطات","تنفس","أدوية","جهاز الصدمات","تسجيل"];
+const FIRE=["قيادة الفريق","إخلاء المرضى","معدات الإطفاء","الاتصال والدعم"];
+const R=(k,f=[])=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}},S=()=>{localStorage.setItem(K.n,JSON.stringify(nurses));localStorage.setItem(K.p,JSON.stringify(patients));localStorage.setItem(K.i,JSON.stringify(isbars));localStorage.setItem(K.h,JSON.stringify(history));localStorage.setItem(K.d,JSON.stringify(distributions));localStorage.setItem(K.t,JSON.stringify(teams))};
+let nurses=R(K.n),patients=R(K.p),isbars=R(K.i),history=R(K.h),distributions=R(K.d),teams=R(K.t,{}),assignments=[],editingISBAR=null,spinning=false,wheelAngle=0;
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+"_"+Math.random(),esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("active");if(b.dataset.tab==="previous")renderPrevious();if(b.dataset.tab==="emergency")renderTeamEditors()});
+const load14=name=>{let c=Date.now()-14*86400000;return history.filter(x=>x.nurse===name&&x.ts>=c).reduce((s,x)=>s+x.load,0)},pl=p=>(SW[p.severity]||1)+(RW[p.resp]||0)+(p.isolation?2:0),A=id=>assignments.find(x=>x.nurseId===id),hasVent=a=>a.patients.some(p=>p.resp==="Vent"),hasIso=a=>a.patients.some(p=>p.isolation);
 
-let nurses=JSON.parse(localStorage.getItem("icu_nurses")||"[]");
-let patients=JSON.parse(localStorage.getItem("icu_patients")||"[]");
-let history=JSON.parse(localStorage.getItem("icu_history")||"[]");
-let assignments=[];
-let manual=false;
+function addNurse(){let name=nurseName.value.trim();if(!name)return alert("اكتب الاسم");nurses.push({id:uid(),name,level:nurseLevel.value});nurseName.value="";S();renderStaff()}
+function delNurse(id){nurses=nurses.filter(x=>x.id!==id);S();renderStaff()}
+function renderStaff(){staffList.innerHTML=nurses.length?nurses.map(n=>`<div class="item"><div><div class="title">${esc(n.name)}</div><span class="badge">${n.level}</span><div class="meta">حمل آخر 14 يوم: ${load14(n.name).toFixed(1)}</div></div><button class="btn danger" onclick="delNurse('${n.id}')">حذف</button></div>`).join(""):`<div class="muted">لا يوجد تمريض.</div>`}
 
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active"); document.getElementById(b.dataset.tab).classList.add("active");
-  if(b.dataset.tab==="history") renderHistory();
-});
-shiftDate.value=new Date().toISOString().slice(0,10);
+function addPatient(){let bed=pBed.value.trim();if(!bed)return alert("اكتب السرير");if(patients.some(p=>p.bed.toLowerCase()===bed.toLowerCase()))return alert("السرير موجود بالفعل");patients.push({id:uid(),bed,severity:pSeverity.value,resp:pResp.value,isolation:pIso.checked,recommended:pRec.value.split("\n").map(x=>x.trim()).filter(Boolean)});pBed.value="";pRec.value="";pIso.checked=false;S();renderPatients()}
+function delPatient(id){let p=patients.find(x=>x.id===id);patients=patients.filter(x=>x.id!==id);if(p?.isbarId)isbars=isbars.filter(x=>x.id!==p.isbarId);S();renderPatients();renderISBAR()}
+function renderPatients(){patientList.innerHTML=patients.length?patients.map(p=>`<div class="item"><div><div class="title">${esc(p.bed)}</div><span class="badge">${p.severity}</span><span class="badge ${p.resp==="Vent"?"vent":""}">${p.resp}</span>${p.isolation?'<span class="badge iso">عزل</span>':''}<div class="meta">${p.recommended?.join(" • ")||""}</div></div><button class="btn danger" onclick="delPatient('${p.id}')">حذف</button></div>`).join(""):`<div class="muted">لا توجد حالات.</div>`}
 
-function persist(){
-  localStorage.setItem("icu_nurses",JSON.stringify(nurses));
-  localStorage.setItem("icu_patients",JSON.stringify(patients));
-  localStorage.setItem("icu_history",JSON.stringify(history));
+function clearISBAR(){editingISBAR=null;["iName","iMedical","iBed","iFluids","iRec"].forEach(x=>document.getElementById(x).value="");document.querySelectorAll(".iline").forEach(x=>x.checked=false);iGender.value="ذكر";iSeverity.value="حرجة";iResp.value="Room Air"}
+function saveISBAR(){let bed=iBed.value.trim();if(!bed)return alert("رقم السرير مطلوب");if(isbars.some(x=>x.bed.toLowerCase()===bed.toLowerCase()&&x.id!==editingISBAR))return alert("رقم السرير موجود");let o={id:editingISBAR||uid(),name:iName.value.trim(),medical:iMedical.value.trim(),bed,gender:iGender.value,severity:iSeverity.value,resp:iResp.value,lines:[...document.querySelectorAll(".iline:checked")].map(x=>x.value),fluids:iFluids.value,recommendations:iRec.value.trim(),savedAt:Date.now()};let ix=isbars.findIndex(x=>x.id===o.id);ix>=0?isbars[ix]=o:isbars.push(o);let p=patients.find(x=>x.isbarId===o.id||x.bed.toLowerCase()===bed.toLowerCase());let np={id:p?.id||uid(),isbarId:o.id,bed:o.bed,severity:o.severity,resp:o.resp,isolation:p?.isolation||false,recommended:o.recommendations.split("\n").map(x=>x.trim()).filter(Boolean),isbar:{name:o.name,medical:o.medical,gender:o.gender,lines:o.lines,fluids:o.fluids}};p?patients[patients.findIndex(x=>x.id===p.id)]=np:patients.push(np);S();clearISBAR();renderISBAR();renderPatients()}
+function editISBAR(id){let c=isbars.find(x=>x.id===id);if(!c)return;editingISBAR=c.id;iName.value=c.name;iMedical.value=c.medical;iBed.value=c.bed;iGender.value=c.gender;iSeverity.value=c.severity;iResp.value=c.resp;iFluids.value=c.fluids;iRec.value=c.recommendations;document.querySelectorAll(".iline").forEach(x=>x.checked=c.lines.includes(x.value))}
+function delISBAR(id){isbars=isbars.filter(x=>x.id!==id);patients=patients.filter(x=>x.isbarId!==id);S();renderISBAR();renderPatients()}
+function renderISBAR(){isbarList.innerHTML=isbars.length?isbars.map(c=>`<div class="item"><div><div class="title">${esc(c.bed)}${c.name?" — "+esc(c.name):""}</div><span class="badge">${c.severity}</span><span class="badge ${c.resp==="Vent"?"vent":""}">${c.resp}</span><div class="meta">MRN: ${esc(c.medical||"—")} • ${c.gender}<br>الوصلات: ${c.lines.join("، ")||"—"} • السوائل: ${esc(c.fluids||"—")}</div></div><div class="actions" style="margin-top:0"><button class="btn secondary" onclick="editISBAR('${c.id}')">تعديل</button><button class="btn danger" onclick="delISBAR('${c.id}')">حذف</button></div></div>`).join(""):`<div class="muted">لا توجد حالات ISBAR محفوظة.</div>`}
+
+function smartDistribute(refresh=false){
+ assignments=[];teams={};distTable.innerHTML="";teamSummary.innerHTML="";distButtons.style.display="none";manualArea.innerHTML="";
+ if(!nurses.length||!patients.length){distAlert.innerHTML='<div class="alert bad">أضف التمريض والحالات أولاً.</div>';return}
+ assignments=nurses.map(n=>({nurseId:n.id,nurse:n.name,level:n.level,patients:[],tasks:[],load:0,free:false,shared:false,doubleStable:false,emergency:false}));
+ let noise=new Map(nurses.map(n=>[n.id,refresh?Math.random():0])),emergency=severeMode.checked,warnings=[];
+ let sortN=arr=>[...arr].sort((x,y)=>load14(x.name)-load14(y.name)||LR[x.level]-LR[y.level]||noise.get(x.id)-noise.get(y.id));
+ function empty(){let c=sortN(nurses.filter(n=>A(n.id).patients.length===0));let ns=c.filter(n=>n.level!=="سينيور الشفت");return (ns.length?ns:c)[0]}
+ let iso=patients.filter(p=>p.isolation).sort((a,b)=>pl(b)-pl(a)),vents=patients.filter(p=>!p.isolation&&p.resp==="Vent").sort((a,b)=>pl(b)-pl(a)),others=patients.filter(p=>!p.isolation&&p.resp!=="Vent").sort((a,b)=>pl(b)-pl(a)||(refresh?Math.random()-.5:0));
+ for(let p of iso){let n=empty();if(!n){warnings.push("لا يوجد عدد كافٍ لإفراد ممرض لكل حالة عزل.");continue}A(n.id).patients.push(p);A(n.id).load+=pl(p)}
+ for(let p of vents){let n=empty();if(!n){warnings.push("تعذر إفراد ممرض لحالة Vent: "+p.bed);continue}A(n.id).patients.push(p);A(n.id).load+=pl(p)}
+ for(let p of others){if(assignments.some(a=>a.patients.some(x=>x.id===p.id)))continue;let c=sortN(nurses.filter(n=>A(n.id).patients.length===0)),ns=c.filter(n=>n.level!=="سينيور الشفت");c=ns.length?ns:c;if(!c.length)break;A(c[0].id).patients.push(p);A(c[0].id).load+=pl(p)}
+ let left=patients.filter(p=>!assignments.some(a=>a.patients.some(x=>x.id===p.id))).sort((a,b)=>pl(a)-pl(b));
+ for(let p of left){
+   let c=assignments.filter(a=>{
+     if(hasIso(a)||a.doubleStable)return false;
+     if(!emergency&&hasVent(a))return false;
+     if(emergency)return a.patients.length<3;
+     if(a.patients.length>=2)return false;
+     if(!a.patients.length)return true;
+     let f=a.patients[0];return (f.severity==="مستقرة"&&p.severity==="مستقرة")||(f.severity==="متوسطة"&&p.severity==="متوسطة")||([f.severity,p.severity].includes("مستقرة")&&[f.severity,p.severity].includes("متوسطة"));
+   }).sort((a,b)=>(a.level==="سينيور الشفت")-(b.level==="سينيور الشفت")||a.load-b.load||load14(a.nurse)-load14(b.nurse)||(refresh?Math.random()-.5:0));
+   if(!c.length){warnings.push("لم يمكن تغطية الحالة "+p.bed+" آلياً.");continue}
+   c[0].patients.push(p);c[0].load+=pl(p);if(emergency&&c[0].patients.length>1)c[0].emergency=true;
+   assignments.forEach(a=>{a.doubleStable=a.patients.length===2&&a.patients.every(x=>x.severity==="مستقرة");a.shared=a.patients.length===2&&!a.doubleStable&&a.patients.some(x=>x.severity==="متوسطة")})
+ }
+ assignments.forEach(a=>{a.free=!a.patients.length;a.doubleStable=a.patients.length===2&&a.patients.every(x=>x.severity==="مستقرة");a.shared=a.patients.length===2&&!a.doubleStable&&a.patients.some(x=>x.severity==="متوسطة")});
+ let eligible=assignments.filter(a=>!hasIso(a)&&!hasVent(a)&&!a.shared&&!a.doubleStable&&!(a.level==="سينيور الشفت"&&a.patients.length)).sort((a,b)=>(a.free?0:1)-(b.free?0:1)||LR[a.level]-LR[b.level]||a.load-b.load);
+ TASKS.forEach(([name,w])=>{if(!eligible.length)return;eligible.sort((a,b)=>a.tasks.length-b.tasks.length||LR[a.level]-LR[b.level]||a.load-b.load);eligible[0].tasks.push(name);eligible[0].load+=w});
+ assignments.filter(a=>a.level==="سينيور الشفت"&&a.patients.length).forEach(a=>{a.tasks=[];a.load=a.patients.reduce((s,p)=>s+pl(p),0)});
+ autoTeams();renderDistribution();
+ let uncovered=patients.filter(p=>!assignments.some(a=>a.patients.some(x=>x.id===p.id)));if(uncovered.length)warnings.push("حالات غير مغطاة: "+uncovered.map(x=>x.bed).join("، "));
+ distAlert.innerHTML=warnings.length?`<div class="alert bad"><b>${emergency?"وضع العجز الشديد مُفعّل":"تنبيه"}</b><br>${warnings.map(esc).join("<br>")}<br>راجع التوزيعة سريرياً قبل التأكيد.</div>`:`<div class="alert ok">تم إنشاء توزيعة جديدة بنجاح${emergency?" مع وضع العجز الشديد":""}.</div>`;
+ distButtons.style.display="flex";renderTeamEditors()
 }
-function addNurse(){
-  const name=nurseName.value.trim(); if(!name)return alert("اكتب اسم الممرض/ة");
-  nurses.push({id:crypto.randomUUID(),name,level:nurseLevel.value});
-  nurseName.value=""; persist(); renderStaff();
-}
-function addPatient(){
-  const name=patientName.value.trim(); if(!name)return alert("اكتب اسم/رقم المريض");
-  patients.push({id:crypto.randomUUID(),name,severity:patientSeverity.value,resp:respSupport.value,recommended:recommended.value.split("\n").map(x=>x.trim()).filter(Boolean)});
-  patientName.value=""; recommended.value=""; persist(); renderPatients();
-}
-function removeNurse(id){nurses=nurses.filter(x=>x.id!==id);persist();renderStaff()}
-function removePatient(id){patients=patients.filter(x=>x.id!==id);persist();renderPatients()}
-function renderStaff(){
-  staffList.innerHTML=nurses.length?nurses.map(n=>`<div class="item"><b>${n.name}</b> <span class="badge">${n.level}</span><div class="actions"><button class="danger" onclick="removeNurse('${n.id}')">حذف</button></div></div>`).join(""):"<p class='small'>لا يوجد تمريض مضاف بعد.</p>";
-}
-function badgeClass(s){return s==="حرجة"?"critical":s==="خطرة"?"high":s==="متوسطة"?"medium":"stable"}
-function renderPatients(){
-  patientList.innerHTML=patients.length?patients.map(p=>`<div class="item"><b>${p.name}</b> <span class="badge ${badgeClass(p.severity)}">${p.severity}</span> <span class="badge">${p.resp}</span>${p.recommended.length?`<div class="small">Recommended: ${p.recommended.join(" • ")}</div>`:""}<div class="actions"><button class="danger" onclick="removePatient('${p.id}')">حذف</button></div></div>`).join(""):"<p class='small'>لا توجد حالات مضافة بعد.</p>";
-}
-function recentLoad(nurseName, days=14){
-  const since=Date.now()-days*86400000;
-  let score=0;
-  history.forEach(h=>{
-    if(new Date(h.date).getTime()>=since){
-      const a=h.assignments.find(x=>x.nurse===nurseName);
-      if(a) score+=a.load||0;
-    }
-  });
-  return score;
-}
-function patientLoad(p){return severityWeight[p.severity]+respWeight[p.resp]}
-function generateDistribution(refresh=false){
-  if(!nurses.length || !patients.length){distributionStatus.innerHTML="<div class='warning'>أضف التمريض والحالات أولاً.</div>";return}
-  const shuffled=[...nurses].sort((a,b)=> recentLoad(a.name)-recentLoad(b.name) || (refresh?Math.random()-.5:0));
-  const senior=shuffled.find(n=>n.level==="Senior Shift");
-  let working=shuffled.filter(n=>n.level!=="Senior Shift");
-  const sortedPatients=[...patients].sort((a,b)=>patientLoad(b)-patientLoad(a));
+function roles(id){let c=[],f=[];CPR.forEach((r,i)=>teams["c"+i]===id&&c.push(r));FIRE.forEach((r,i)=>teams["f"+i]===id&&f.push(r));return{c,f}}
+function autoTeams(){let elig=nurses.filter(n=>!hasIso(A(n.id))),sort=(arr,sen=false)=>[...arr].sort((x,y)=>{let a=A(x.id),b=A(y.id);if(sen){let sx=x.level==="سينيور الشفت"?0:1,sy=y.level==="سينيور الشفت"?0:1;if(sx!==sy)return sx-sy}if(a.free!==b.free)return a.free?-1:1;return a.load-b.load||load14(a.nurse)-load14(b.nurse)}),used=new Set;CPR.forEach((r,i)=>{let p=elig.filter(n=>!used.has(n.id));if(!p.length)p=elig;let n=sort(p,r==="تسجيل")[0];teams["c"+i]=n?.id||"";n&&used.add(n.id)});used=new Set;FIRE.forEach((r,i)=>{let p=nurses.filter(n=>!used.has(n.id));if(!p.length)p=nurses;let n=sort(p,r==="قيادة الفريق")[0];teams["f"+i]=n?.id||"";n&&used.add(n.id)});S()}
+function renderDistribution(){distTable.innerHTML=`<div class="card"><h2>التوزيعة الحالية</h2><div class="tablewrap"><table><thead><tr><th>الممرض</th><th>المستوى</th><th>الحالات</th><th>Recommended</th><th>المهام</th><th>CPR</th><th>الإنقاذ</th><th>الحمل</th></tr></thead><tbody>${assignments.map(a=>{let r=roles(a.nurseId);return`<tr><td><b>${esc(a.nurse)}</b>${a.free?"<br><span class='badge'>Free</span>":""}</td><td>${a.level}${a.doubleStable?"<br><span class='badge vent'>2 Stable = Vent Rule</span>":a.shared?"<br><span class='badge'>Share</span>":""}</td><td>${a.patients.length?a.patients.map(p=>`${esc(p.bed)}<br><span class="meta">${p.severity} • ${p.resp}${p.isolation?" • عزل":""}</span>`).join("<hr>"):"Free"}</td><td>${a.patients.flatMap(p=>p.recommended||[]).map(esc).join("<br>")||"—"}</td><td>${a.tasks.map(esc).join("<br>")||"—"}</td><td>${r.c.map(esc).join("<br>")||"—"}</td><td>${r.f.map(esc).join("<br>")||"—"}</td><td>${a.load.toFixed(1)}</td></tr>`}).join("")}</tbody></table></div></div>`;teamSummary.innerHTML=`<div class="card"><h2>CPR</h2>${CPR.map((r,i)=>`<div class="item"><b>${r}</b><span>${esc(nurses.find(n=>n.id===teams["c"+i])?.name||"غير محدد")}</span></div>`).join("")}</div><div class="card"><h2>فريق الإنقاذ</h2>${FIRE.map((r,i)=>`<div class="item"><b>${r}</b><span>${esc(nurses.find(n=>n.id===teams["f"+i])?.name||"غير محدد")}</span></div>`).join("")}</div>`}
 
-  assignments=shuffled.map(n=>({nurse:n.name,level:n.level,patients:[],tasks:[],load:0,free:false}));
-  const A=name=>assignments.find(x=>x.nurse===name);
+function manualMode(){if(!nurses.length||!patients.length)return;assignments=[];teams={};distTable.innerHTML="";teamSummary.innerHTML="";distButtons.style.display="none";manualArea.innerHTML=`<div class="alert warn">اختر ممرضاً لكل حالة ثم طبّق التوزيع اليدوي.</div>${patients.map(p=>`<label>${esc(p.bed)} — ${p.severity} — ${p.resp}</label><select id="m_${p.id}"><option value="">اختر</option>${nurses.map(n=>`<option value="${n.id}">${esc(n.name)} — ${n.level}</option>`).join("")}</select>`).join("")}<div class="actions"><button class="btn primary" onclick="applyManual()">تطبيق</button></div>`}
+function applyManual(){assignments=nurses.map(n=>({nurseId:n.id,nurse:n.name,level:n.level,patients:[],tasks:[],load:0,free:false,shared:false,doubleStable:false}));patients.forEach(p=>{let id=document.getElementById("m_"+p.id).value,a=A(id);if(a){a.patients.push(p);a.load+=pl(p)}});assignments.forEach(a=>{a.free=!a.patients.length;a.doubleStable=a.patients.length===2&&a.patients.every(x=>x.severity==="مستقرة");a.shared=a.patients.length>1&&!a.doubleStable});autoTeams();renderDistribution();manualArea.innerHTML="";distAlert.innerHTML='<div class="alert warn">تم تطبيق توزيع يدوي. راجعه قبل التأكيد.</div>';distButtons.style.display="flex";renderTeamEditors()}
 
-  // Prefer keeping Senior free only if the remaining staff can carry the base assignment safely.
-  const ventCount=sortedPatients.filter(p=>p.resp==="Vent").length;
-  const nonVentCount=sortedPatients.length-ventCount;
-  let keepSeniorFree=!!senior && working.length>0 && sortedPatients.length<=working.length+Math.floor(working.length/2);
+function confirmDistribution(){if(!assignments.length)return;let now=new Date(),snap={id:uid(),ts:now.getTime(),date:now.toLocaleDateString("ar-EG"),time:now.toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"}),severe:severeMode.checked,assignments:JSON.parse(JSON.stringify(assignments)),teams:JSON.parse(JSON.stringify(teams))};distributions.unshift(snap);assignments.forEach(a=>history.push({ts:snap.ts,nurse:a.nurse,load:a.load}));S();distButtons.style.display="none";distAlert.innerHTML='<div class="alert ok">تم تأكيد التوزيعة وحفظها في التوزيعات السابقة.</div>';renderPrevious()}
+function deleteCurrentDistribution(){assignments=[];teams={};distTable.innerHTML="";teamSummary.innerHTML="";distButtons.style.display="none";distAlert.innerHTML='<div class="alert warn">تم حذف التوزيعة الحالية فقط.</div>';renderTeamEditors()}
+function renderPrevious(){previousList.innerHTML=distributions.length?distributions.map(d=>`<button class="item" style="width:100%;color:inherit;text-align:right" onclick="openInvoice('${d.id}')"><div><div class="title">${esc(d.date)} — ${esc(d.time)}</div><div class="meta">${d.assignments.length} ممرض${d.severe?" • عجز شديد":""}</div></div><span class="badge">فتح</span></button>`).join(""):`<div class="muted">لا توجد توزيعات مؤكدة.</div>`;if(!distributions.length)invoiceArea.innerHTML=""}
+function snapRoles(d,id){let c=[],f=[];CPR.forEach((r,i)=>d.teams["c"+i]===id&&c.push(r));FIRE.forEach((r,i)=>d.teams["f"+i]===id&&f.push(r));return{c,f}}
+function openInvoice(id){let d=distributions.find(x=>x.id===id);if(!d)return;invoiceArea.innerHTML=`<div class="invoice"><div style="display:flex;justify-content:space-between;border-bottom:2px solid #0f766e;padding-bottom:10px"><div><h2 style="margin:0">ICU Shift Balance</h2><div>كشف توزيع الشفت</div></div><div>${esc(d.date)}<br>${esc(d.time)}</div></div><div class="tablewrap"><table><thead><tr><th>الممرض</th><th>الحالات</th><th>المهام</th><th>CPR</th><th>الإنقاذ</th><th>الحمل</th></tr></thead><tbody>${d.assignments.map(a=>{let r=snapRoles(d,a.nurseId);return`<tr><td><b>${esc(a.nurse)}</b><br>${a.level}</td><td>${a.patients.length?a.patients.map(p=>`${esc(p.bed)} (${p.severity}/${p.resp})`).join("<br>"):"Free"}</td><td>${a.tasks.join("<br>")||"—"}</td><td>${r.c.join("<br>")||"—"}</td><td>${r.f.join("<br>")||"—"}</td><td>${(+a.load).toFixed(1)}</td></tr>`}).join("")}</tbody></table></div><div style="text-align:center;margin-top:12px;font-size:12px;color:#64748b">فكرة وتنفيذ Mr/ amr shams - جميع حقوق الملكية والفكرية محفوظة 2026</div></div><div class="actions no-print"><button class="btn secondary" onclick="window.print()">طباعة / حفظ PDF</button><button class="btn danger" onclick="deletePast('${d.id}')">حذف</button></div>`}
+function deletePast(id){if(!confirm("حذف التوزيعة؟"))return;distributions=distributions.filter(x=>x.id!==id);S();renderPrevious()}
 
-  let active=[...working];
-  if(!keepSeniorFree && senior) active.push(senior);
-  if(!active.length && senior) active=[senior];
+function availableCPR(){return assignments.length?nurses.filter(n=>!hasIso(A(n.id))):nurses}
+function renderTeamEditors(){cprEditor.innerHTML=CPR.map((r,i)=>`<label>${r}</label><select id="ce${i}"><option value="">اختر</option>${availableCPR().map(n=>`<option value="${n.id}" ${teams["c"+i]===n.id?"selected":""}>${esc(n.name)} — ${n.level}</option>`).join("")}</select>`).join("");fireEditor.innerHTML=FIRE.map((r,i)=>`<label>${r}</label><select id="fe${i}"><option value="">اختر</option>${nurses.map(n=>`<option value="${n.id}" ${teams["f"+i]===n.id?"selected":""}>${esc(n.name)} — ${n.level}</option>`).join("")}</select>`).join("")}
+function saveTeams(){let t={};CPR.forEach((_,i)=>t["c"+i]=document.getElementById("ce"+i).value);FIRE.forEach((_,i)=>t["f"+i]=document.getElementById("fe"+i).value);let vals=CPR.map((_,i)=>t["c"+i]).filter(Boolean);if(new Set(vals).size!==vals.length){teamAlert.innerHTML='<div class="alert bad">لا تكرر نفس الممرض داخل CPR.</div>';return}teams=t;S();teamAlert.innerHTML='<div class="alert ok">تم حفظ الفرق.</div>';if(assignments.length)renderDistribution()}
 
-  // 1) Vent: one nurse per vent whenever possible.
-  const vents=sortedPatients.filter(p=>p.resp==="Vent");
-  const others=sortedPatients.filter(p=>p.resp!=="Vent");
-  for(const p of vents){
-    const cand=active.filter(n=>A(n.name).patients.length===0).sort((x,y)=>A(x.name).load-A(y.name).load || recentLoad(x.name)-recentLoad(y.name))[0];
-    if(cand){A(cand.name).patients.push(p);A(cand.name).load+=patientLoad(p);}
-    else break;
-  }
+function crazyNames(){return nurses.filter(n=>n.level!=="سينيور الشفت")}function openCrazy(){crazyOverlay.classList.add("open");crazyResult.style.display="none";drawWheel()}function closeCrazy(){if(!spinning)crazyOverlay.classList.remove("open")}
+function drawWheel(a=wheelAngle){let c=wheel,ctx=c.getContext("2d"),names=crazyNames(),W=c.width,x=W/2,y=W/2,r=W*.43;ctx.clearRect(0,0,W,W);if(!names.length){ctx.fillStyle="#fff";ctx.font="bold 30px sans-serif";ctx.textAlign="center";ctx.fillText("لا يوجد تمريض متاح",x,y);return}let s=Math.PI*2/names.length,cols=["#0f766e","#334155","#155e75","#7c2d12","#4c1d95","#166534","#9f1239"];names.forEach((n,i)=>{let a0=a+i*s-Math.PI/2;ctx.beginPath();ctx.moveTo(x,y);ctx.arc(x,y,r,a0,a0+s);ctx.closePath();ctx.fillStyle=cols[i%cols.length];ctx.fill();ctx.strokeStyle="#0f172a";ctx.lineWidth=5;ctx.stroke();ctx.save();ctx.translate(x,y);ctx.rotate(a0+s/2);ctx.textAlign="right";ctx.fillStyle="#fff";ctx.font="bold 25px sans-serif";ctx.fillText(n.name,r-22,8);ctx.restore()});ctx.beginPath();ctx.arc(x,y,54,0,Math.PI*2);ctx.fillStyle="#0f172a";ctx.fill();ctx.fillStyle="#fff";ctx.font="bold 20px sans-serif";ctx.textAlign="center";ctx.fillText("ICU",x,y+7)}
+function spinCrazy(){if(spinning)return;let names=crazyNames();if(!names.length)return alert("لا يوجد تمريض متاح بعد استبعاد السينيور");spinning=true;spinBtn.disabled=true;crazyResult.style.display="none";let win=Math.floor(Math.random()*names.length),s=Math.PI*2/names.length,start=wheelAngle,desired=-(win*s+s/2),extra=(6+Math.floor(Math.random()*4))*Math.PI*2,delta=((desired-start)%(Math.PI*2)+Math.PI*2)%(Math.PI*2),target=start+extra+delta,t0=performance.now(),dur=4200;function f(now){let t=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-t,4);wheelAngle=start+(target-start)*e;drawWheel(wheelAngle);if(t<1)requestAnimationFrame(f);else{spinning=false;spinBtn.disabled=false;crazyResult.innerHTML="القرعة اختارت: <b>"+esc(names[win].name)+"</b>";crazyResult.style.display="block"}}requestAnimationFrame(f)}
 
-  // 2) Distribute remaining patients to lowest safe load.
-  for(const p of others){
-    let candidates=active.filter(n=>{
-      const a=A(n.name);
-      if(a.patients.some(x=>x.resp==="Vent")) return false;
-      if(a.patients.length===0) return true;
-      if(a.patients.length===1){
-        const existing=a.patients[0];
-        // Prefer pairing only stable with moderate/other stable in shortage.
-        return p.severity==="مستقرة" || existing.severity==="مستقرة";
-      }
-      return false;
-    });
-    if(!candidates.length) candidates=active.filter(n=>!A(n.name).patients.some(x=>x.resp==="Vent"));
-    candidates.sort((x,y)=>A(x.name).load-A(y.name).load || recentLoad(x.name)-recentLoad(y.name));
-    if(candidates[0]){
-      A(candidates[0].name).patients.push(p);
-      A(candidates[0].name).load+=patientLoad(p);
-    }
-  }
-
-  // Mark free.
-  assignments.forEach(a=>a.free=a.patients.length===0);
-
-  // Additional tasks: free/newest first, avoid vent or overloaded staff where possible.
-  let taskPool=[...assignments].sort((a,b)=>{
-    if(a.free!==b.free)return a.free?-1:1;
-    if(levelRank[a.level]!==levelRank[b.level])return levelRank[a.level]-levelRank[b.level];
-    return a.load-b.load || recentLoad(a.nurse)-recentLoad(b.nurse);
-  });
-  TASKS.forEach(task=>{
-    const c=taskPool.find(a=>!a.patients.some(p=>p.resp==="Vent") && a.patients.length<3 && a.tasks.length<1) || taskPool[0];
-    if(c){c.tasks.push(task.name);c.load+=task.weight}
-  });
-
-  let shortage = patients.length>nurses.length;
-  let severeShortage = assignments.some(a=>a.patients.length>2) || vents.length>active.length;
-  let seniorTxt = senior ? (keepSeniorFree?"تمت محاولة إبقاء Senior Shift بدون حالات.":"تم إدخال Senior Shift في التوزيع لتجنب تحميل زائد على باقي الاستف.") : "";
-  distributionStatus.innerHTML = severeShortage
-    ? `<div class="warning">عجز شديد: التوزيعة تجاوزت القواعد المفضلة. استخدم التدخل اليدوي وراجع التوزيع سريريًا. ${seniorTxt}</div>`
-    : shortage
-      ? `<div class="warning">حالة عجز: تم توزيع الحالات بأقل حمل ممكن وفق القواعد المسجلة. ${seniorTxt}</div>`
-      : `<div class="ok">تم إنشاء توزيعة متوازنة مبدئيًا. ${seniorTxt}</div>`;
-  renderAssignments();
-}
-function toggleManual(){manual=!manual;renderAssignments()}
-function renderAssignments(){
-  assignmentList.innerHTML=assignments.map((a,idx)=>{
-    const phtml=a.patients.length?a.patients.map(p=>`
-      <div class="item">
-        <b>${p.name}</b> <span class="badge ${badgeClass(p.severity)}">${p.severity}</span> <span class="badge">${p.resp}</span>
-        ${p.recommended.length?`<div style="margin-top:7px"><b>Recommended</b>${p.recommended.map((r,i)=>`<label class="checkbox-line"><input type="checkbox"> ${r}</label>`).join("")}</div>`:""}
-      </div>`).join(""):"<div class='small'>Free</div>";
-    const manualUI=manual?`<div style="margin-top:10px"><label>نقل حالة إلى هذا الممرض</label><select onchange="manualMove('${a.nurse}',this.value);this.value=''"><option value="">اختر حالة</option>${patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join("")}</select></div>`:"";
-    return `<div class="card assignment ${a.free?'free':''}"><h3>${a.nurse}</h3><span class="badge">${a.level}</span><div class="small">Workload: ${a.load.toFixed(1)} | Historical 14d: ${recentLoad(a.nurse).toFixed(1)}</div>${phtml}${a.tasks.length?`<div class="item"><b>مهام إضافية:</b> ${a.tasks.join("، ")}</div>`:""}${manualUI}</div>`
-  }).join("");
-}
-function manualMove(nurse, patientId){
-  if(!patientId)return;
-  const p=patients.find(x=>x.id===patientId); if(!p)return;
-  assignments.forEach(a=>a.patients=a.patients.filter(x=>x.id!==patientId));
-  const target=assignments.find(a=>a.nurse===nurse); target.patients.push(p);
-  assignments.forEach(a=>{a.load=a.patients.reduce((s,p)=>s+patientLoad(p),0)+a.tasks.reduce((s,t)=>s+(TASKS.find(x=>x.name===t)?.weight||0),0);a.free=a.patients.length===0});
-  renderAssignments();
-}
-function saveShift(){
-  if(!assignments.length)return alert("اعمل التوزيعة أولاً");
-  const rec={date:shiftDate.value,day:new Date(shiftDate.value+"T12:00:00").toLocaleDateString("ar-EG",{weekday:"long"}),shift:shiftName.value,assignments:assignments.map(a=>({nurse:a.nurse,level:a.level,patients:a.patients.map(p=>({name:p.name,severity:p.severity,resp:p.resp})),tasks:[...a.tasks],load:a.load,free:a.free}))};
-  history.unshift(rec);persist();alert("تم حفظ الشفت في الهيستوري");
-}
-function renderHistory(){
-  if(!history.length){historyList.innerHTML="<p class='small'>لا يوجد هيستوري محفوظ حتى الآن.</p>";return}
-  historyList.innerHTML=history.map(h=>`<div class="item"><b>${h.date} — ${h.day} — ${h.shift}</b><table><thead><tr><th>الممرض</th><th>المستوى</th><th>الحالات</th><th>المهام</th><th>الحمل</th></tr></thead><tbody>${h.assignments.map(a=>`<tr><td>${a.nurse}</td><td>${a.level}</td><td>${a.free?"Free":a.patients.map(p=>`${p.name} (${p.severity}/${p.resp})`).join("<br>")}</td><td>${a.tasks.join("، ")||"—"}</td><td>${(a.load||0).toFixed(1)}</td></tr>`).join("")}</tbody></table></div>`).join("")
-}
-function clearHistory(){if(confirm("هل تريد مسح الهيستوري بالكامل؟")){history=[];persist();renderHistory()}}
-renderStaff();renderPatients();renderHistory();
-
-if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+renderStaff();renderPatients();renderISBAR();renderPrevious();renderTeamEditors();drawWheel();
 </script>
 </body>
 </html>
